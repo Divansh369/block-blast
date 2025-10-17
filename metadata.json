@@ -1,0 +1,5 @@
+{
+  "name": "Gemini Block Blast",
+  "description": "A classic block puzzle game where users place shapes to clear lines on a grid. The game uses the Gemini API to generate challenging block combinations as the game progresses, creating an adaptive difficulty curve. Player scores are tracked locally.",
+  "requestFramePermissions": []
+}
