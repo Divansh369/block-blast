@@ -32,15 +32,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: 'npm' # Although you don't use npm install, this is good practice
+          # The "cache: 'npm'" line has been removed to fix the error
           
       - name: Setup Pages
         uses: actions/configure-pages@v5
         
       - name: Create Build Artifact
+        # This step copies all project files into a directory named '_site'
+        # which is the standard directory for GitHub Pages artifacts.
         run: |
           mkdir -p _site
-          cp -R ./* _site/
+          # Use rsync for more robust file copying, excluding git and docs
+          rsync -av --progress . ./_site --exclude .git --exclude .github --exclude docs
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
