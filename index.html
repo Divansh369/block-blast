@@ -1,4 +1,50 @@
-<script type="importmap">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gemini Block Blast</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* Custom fonts */
+      .font-orbitron { font-family: 'Orbitron', sans-serif; }
+      .font-poppins { font-family: 'Poppins', sans-serif; }
+      
+      /* Animations */
+      @keyframes scale-in {
+        from { transform: scale(0.8); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+      }
+      .animate-scale-in { animation: scale-in 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+      @keyframes shrink-out {
+        from { transform: scale(1); opacity: 1; }
+        to { transform: scale(0); opacity: 0; }
+      }
+      .animate-shrink-out { animation: shrink-out 0.4s ease-out forwards; }
+      
+      @keyframes hold-swap {
+        0% { border-color: #a855f7; background-color: rgba(252, 211, 77, 0); }
+        50% { border-color: #facc15; transform: scale(1.05); background-color: rgba(252, 211, 77, 0.2); }
+        100% { border-color: #a855f7; background-color: rgba(252, 211, 77, 0); }
+      }
+      .animate-hold-swap { animation: hold-swap 0.4s ease-in-out; }
+
+      @keyframes empty-fade-in {
+        0% { background-color: rgba(52, 211, 153, 0.5); }
+        100% { background-color: transparent; }
+      }
+      .animate-empty-fade-in { animation: empty-fade-in 0.4s ease-out; }
+
+      .powerup-button:is(:hover, :focus-visible) .powerup-icon {
+        animation: tada 1s ease infinite;
+      }
+      
+    </style>
+  <script type="importmap">
 {
   "imports": {
     "react": "https://aistudiocdn.com/react@^19.2.0",
@@ -9,4 +55,9 @@
   }
 }
 </script>
-full contents of index.html
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/index.tsx"></script>
+  </body>
+</html>
