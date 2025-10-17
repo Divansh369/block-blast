@@ -1,0 +1,51 @@
+# GitHub Action for building the static web application
+
+name: Build and Test Application
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: Build Application
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20' # Using a recent LTS version of Node.js
+
+    # In a project with dependencies, you would have steps here like:
+    # - name: Install dependencies
+    #   run: npm install
+    # - name: Run tests
+    #   run: npm test
+    # - name: Build project
+    #   run: npm run build
+
+    # Since this project is a static site with no build step, our "build"
+    # is to archive the necessary files for deployment.
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: gemini-block-blast-build
+        path: |
+          ./components
+          ./hooks
+          ./screens
+          ./services
+          ./utils
+          ./App.tsx
+          ./constants.ts
+          ./index.html
+          ./index.tsx
+          ./metadata.json
+          ./types.ts
+        retention-days: 7
