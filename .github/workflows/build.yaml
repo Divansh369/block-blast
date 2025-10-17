@@ -1,51 +1,53 @@
-# GitHub Action for building the static web application
+# GitHub Action for building and deploying the static site to GitHub Pages
 
-name: Build and Test Application
+name: Deploy to GitHub Pages
 
 on:
+  # Runs on pushes targeting the default branch
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
+  # Build job
   build:
-    name: Build Application
+    name: Build
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # This project is a static site, so we upload the entire root directory.
+          # The action automatically excludes files like .git, .github, etc.
+          path: '.'
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20' # Using a recent LTS version of Node.js
-
-    # In a project with dependencies, you would have steps here like:
-    # - name: Install dependencies
-    #   run: npm install
-    # - name: Run tests
-    #   run: npm test
-    # - name: Build project
-    #   run: npm run build
-
-    # Since this project is a static site with no build step, our "build"
-    # is to archive the necessary files for deployment.
-    - name: Archive production artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: gemini-block-blast-build
-        path: |
-          ./components
-          ./hooks
-          ./screens
-          ./services
-          ./utils
-          ./App.tsx
-          ./constants.ts
-          ./index.html
-          ./index.tsx
-          ./metadata.json
-          ./types.ts
-        retention-days: 7
+  # Deployment job
+  deploy:
+    name: Deploy
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
