@@ -24,6 +24,7 @@ export const useGameLogic = (settings: GameSettings) => {
 
     const [clearingCells, setClearingCells] = useState<{ rows: number[], cols: number[] }>({ rows: [], cols: [] });
     const [placedCells, setPlacedCells] = useState<{ r: number; c: number }[]>([]);
+    const [newlyEmptyCells, setNewlyEmptyCells] = useState<{ r: number; c: number }[]>([]);
 
     // Hold feature state
     const [heldBlock, setHeldBlock] = useState<Block | null>(null);
@@ -61,6 +62,13 @@ export const useGameLogic = (settings: GameSettings) => {
     }, [placedCells]);
 
     useEffect(() => {
+        if (newlyEmptyCells.length > 0) {
+            const timer = setTimeout(() => setNewlyEmptyCells([]), 400); // Corresponds to animation duration
+            return () => clearTimeout(timer);
+        }
+    }, [newlyEmptyCells]);
+
+    useEffect(() => {
         if (swappedBlockIndex !== null) {
             const timer = setTimeout(() => setSwappedBlockIndex(null), 300); // Animation duration
             return () => clearTimeout(timer);
@@ -94,6 +102,20 @@ export const useGameLogic = (settings: GameSettings) => {
             setTimeout(() => {
                 setGrid(gridAfterClear);
                 setClearingCells({ rows: [], cols: [] });
+                
+                const emptyCellsCoords: { r: number; c: number }[] = [];
+                clearedRows.forEach(r => {
+                    for (let c = 0; c < width; c++) emptyCellsCoords.push({ r, c });
+                });
+                clearedCols.forEach(c => {
+                    for (let r = 0; r < height; r++) {
+                        if (!clearedRows.includes(r)) {
+                            emptyCellsCoords.push({ r, c });
+                        }
+                    }
+                });
+                setNewlyEmptyCells(emptyCellsCoords);
+
             }, 400); // Animation time
         } else {
             setGrid(gridAfterClear);
@@ -169,6 +191,7 @@ export const useGameLogic = (settings: GameSettings) => {
         isHintLoading,
         clearingCells,
         placedCells,
+        newlyEmptyCells,
         heldBlock,
         hasHeldThisTurn,
         swappedBlockIndex,

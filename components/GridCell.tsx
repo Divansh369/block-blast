@@ -14,6 +14,7 @@ interface GridCellProps {
   isClearing: boolean;
   isPlaced: boolean;
   isTargeted: boolean;
+  isNewlyEmpty: boolean;
 }
 
 const GridCell: React.FC<GridCellProps> = ({ 
@@ -28,7 +29,8 @@ const GridCell: React.FC<GridCellProps> = ({
     isHinted, 
     isClearing,
     isPlaced,
-    isTargeted
+    isTargeted,
+    isNewlyEmpty
 }) => {
   const baseClass = "w-full h-full border border-slate-700/50 transition-colors duration-150";
   const filledClass = typeof value === 'string' ? `${value}` : 'bg-slate-800';
@@ -37,8 +39,9 @@ const GridCell: React.FC<GridCellProps> = ({
   const clearingClass = isClearing ? 'animate-shrink-out' : '';
   const placedClass = isPlaced ? 'animate-scale-in' : '';
   const targetedClass = isTargeted ? 'bg-red-500/50 ring-2 ring-red-300' : '';
+  const newlyEmptyClass = isNewlyEmpty ? 'animate-empty-fade-in' : '';
 
-  return <div className={`${baseClass} ${filledClass} ${hoverClass} ${hintClass} ${clearingClass} ${placedClass} ${targetedClass}`} 
+  return <div className={`${baseClass} ${filledClass} ${hoverClass} ${hintClass} ${clearingClass} ${placedClass} ${targetedClass} ${newlyEmptyClass}`} 
     onDragOver={onDragOver} 
     onDrop={onDrop}
     onDragEnter={onDragEnter}

@@ -30,6 +30,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ settings, onGoHome }) => {
     isHintLoading,
     clearingCells,
     placedCells,
+    newlyEmptyCells,
     heldBlock,
     hasHeldThisTurn,
     swappedBlockIndex,
@@ -148,6 +149,10 @@ const GameScreen: React.FC<GameScreenProps> = ({ settings, onGoHome }) => {
     return placedCells.some(cell => cell.r === r && cell.c === c);
   };
 
+  const isCellNewlyEmpty = (r: number, c: number) => {
+    return newlyEmptyCells.some(cell => cell.r === r && cell.c === c);
+  };
+
   return (
     <div className="flex flex-col md:flex-row items-center justify-center min-h-screen p-4 gap-8">
       <CustomDragLayer draggedBlockInfo={draggedBlockInfo ? { block: draggedBlockInfo.block, initialX: draggedBlockInfo.initialX, initialY: draggedBlockInfo.initialY } : null} />
@@ -206,6 +211,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ settings, onGoHome }) => {
               isClearing={isCellClearing(r,c)}
               isPlaced={isCellPlaced(r, c)}
               isTargeted={false}
+              isNewlyEmpty={isCellNewlyEmpty(r,c)}
             />
           ))
         )}

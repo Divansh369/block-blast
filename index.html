@@ -2,7 +2,6 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gemini Block Blast</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -51,11 +50,21 @@
       .animate-zap { animation: zap 0.5s ease-out; }
 
       @keyframes hold-swap {
-        50% { border-color: #facc15; transform: scale(1.05); }
+        50% {
+          border-color: #facc15; /* yellow-400 */
+          background-color: rgba(250, 204, 21, 0.2); /* yellow-400/20 */
+          transform: scale(1.05);
+        }
       }
       .animate-hold-swap {
         animation: hold-swap 0.4s ease-out;
       }
+
+      @keyframes empty-fade-in {
+        from { background-color: #fef08a; } /* yellow-200 */
+        to { background-color: #1e293b; }   /* slate-800 */
+      }
+      .animate-empty-fade-in { animation: empty-fade-in 0.4s ease-out; }
 
       .powerup-button[disabled] {
         filter: grayscale(1);
@@ -74,6 +83,6 @@
 </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
+    <script type="module" src="./index.tsx"></script>
   </body>
 </html>
